@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_book_swap_app/state/auth_providers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/models/book.dart';
 import '../../state/book_providers.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookFormScreen extends ConsumerStatefulWidget {
   final Book? existingBook;
@@ -35,6 +35,11 @@ class _BookFormScreenState extends ConsumerState<BookFormScreen> {
     }
   }
 
+  Future<void> _pickImage() async {
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    setState(() => imageFile = picked);
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(bookControllerProvider.notifier);
@@ -50,10 +55,7 @@ class _BookFormScreenState extends ConsumerState<BookFormScreen> {
           child: ListView(
             children: [
               GestureDetector(
-                onTap: () async {
-                  final picked = await picker.pickImage(source: ImageSource.gallery);
-                  setState(() => imageFile = picked);
-                },
+                onTap: _pickImage,
                 child: imageFile != null
                     ? Image.file(
                         File(imageFile!.path),
@@ -72,17 +74,23 @@ class _BookFormScreenState extends ConsumerState<BookFormScreen> {
               TextFormField(
                 initialValue: title,
                 decoration: const InputDecoration(labelText: 'Book Title'),
+                validator: (v) => v == null || v.trim().isEmpty
+                    ? 'Please enter a book title'
+                    : null,
                 onChanged: (v) => title = v,
               ),
               const SizedBox(height: 8),
               TextFormField(
                 initialValue: author,
                 decoration: const InputDecoration(labelText: 'Author'),
+                validator: (v) => v == null || v.trim().isEmpty
+                    ? 'Please enter the author name'
+                    : null,
                 onChanged: (v) => author = v,
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
-                initialValue: condition,
+                value: condition,
                 decoration: const InputDecoration(labelText: 'Condition'),
                 items: ['New', 'Like New', 'Good', 'Used']
                     .map((e) => DropdownMenuItem(value: e, child: Text(e)))
@@ -92,26 +100,50 @@ class _BookFormScreenState extends ConsumerState<BookFormScreen> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
+                  if (!_formKey.currentState!.validate()) return;
+
                   final repo = ref.read(bookRepoProvider);
                   final user = FirebaseAuth.instance.currentUser;
-                  if (user == null) return;
-                  final book = Book(
-                    title: title.trim(),
-                    author: author.trim(),
-                    condition: condition,
-                    ownerId: user.uid,
-                    status: 'Available', id: '', imageUrl: '', createdAt: Timestamp.now(), updatedAt: Timestamp.now(),
-                  );
 
-                  await repo.createBook(book, imageFile);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('✅ Book added successfully!')),
-                  );
-                  Navigator.pop(context);
+                  if (user == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('User not logged in')),
+                    );
+                    return;
+                  }
+
+                  try {
+                    final book = Book(
+                      id: '',
+                      title: title.trim(),
+                      author: author.trim(),
+                      condition: condition,
+                      ownerId: user.uid,
+                      status: 'Available',
+                      imageUrl: '',
+                      createdAt: Timestamp.now(),
+                      updatedAt: Timestamp.now(),
+                    );
+
+                    print('📘 Uploading book data: ${book.toJson()}');
+                    await repo.createBook(book, imageFile);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('✅ Book added successfully!')),
+                    );
+
+                    if (context.mounted) Navigator.pop(context);
+                  } catch (e, st) {
+                    print('❌ Error adding book: $e');
+                    print(st);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error: $e')),
+                    );
+                  }
                 },
-                child: const Text('Add Book'),
+                child: Text(isEditing ? 'Update Book' : 'Add Book'),
               ),
-
               if (state is AsyncError)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
