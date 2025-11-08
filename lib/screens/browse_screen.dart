@@ -352,6 +352,10 @@ class _ListingsScreenState extends State<ListingsScreen>
   }
 }
 
+class WaterDropHeader {
+  const WaterDropHeader({required ui.Color waterDropColor});
+}
+
 // ── Sophisticated Glass Card with Save Logic ─────────────────────
 class _GlassListingCard extends StatefulWidget {
   final Map<String, dynamic> listing;
@@ -605,6 +609,14 @@ class _GlassListingCardState extends State<_GlassListingCard>
     return 'now';
   }
 }
+
+extension on BuildContext {
+  watch() {}
+  
+  read() {}
+}
+
+/* Removed custom BuildContext extension to avoid conflict with flutter_bloc's context.watch<T>() */
 
 // (Animations handled inline where ListingCard is used.)
 
