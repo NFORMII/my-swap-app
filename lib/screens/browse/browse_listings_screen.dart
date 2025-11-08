@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/books_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/book_card.dart';
@@ -31,33 +30,44 @@ class _BrowseListingsScreenState extends State<BrowseListingsScreen> {
     final browseBooks = userId.isNotEmpty
         ? booksProvider.getBrowseBooks(userId)
         : booksProvider.allBooks
-              .where((b) => b.status == SwapStatus.available)
-              .toList();
+            .where((b) => b.status == SwapStatus.available)
+            .toList();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Browse Listings'),
-        // show back arrow when navigated to from another route
         leading: Navigator.canPop(context) ? const BackButton() : null,
       ),
-      body: booksProvider.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : browseBooks.isEmpty
-          ? const Center(child: Text('No listings found'))
-          : RefreshIndicator(
-              onRefresh: () async {
-                // trigger a refresh by re-listening
-                booksProvider.listenToAllBooks();
-              },
-              child: ListView.builder(
-                padding: const EdgeInsets.all(12),
-                itemCount: browseBooks.length,
-                itemBuilder: (context, index) {
-                  final book = browseBooks[index];
-                  return BookCard(book: book);
-                },
+
+      /// ✅ Wrapped in SafeArea to prevent content under system bars
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Column(
+            children: [
+              Expanded(
+                child: booksProvider.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : browseBooks.isEmpty
+                        ? const Center(child: Text('No listings found'))
+                        : RefreshIndicator(
+                            onRefresh: () async {
+                              booksProvider.listenToAllBooks();
+                            },
+                            child: ListView.builder(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: browseBooks.length,
+                              itemBuilder: (context, index) {
+                                final book = browseBooks[index];
+                                return BookCard(book: book);
+                              },
+                            ),
+                          ),
               ),
-            ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
