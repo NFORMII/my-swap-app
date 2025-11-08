@@ -37,6 +37,8 @@ class BookRepoFirebase implements BookRepo {
 
     if (imageFile != null) {
       final ref = _storage.ref('book_covers/${book.ownerId}/$id.jpg');
+      print('📘 Creating book for owner: ${book.ownerId}');
+
       await ref.putData(await imageFile.readAsBytes());
       imageUrl = await ref.getDownloadURL();
     }

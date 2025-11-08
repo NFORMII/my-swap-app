@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_book_swap_app/state/auth_providers.dart';
 import '../../domain/models/book.dart';
 import '../../state/book_providers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookFormScreen extends ConsumerStatefulWidget {
   final Book? existingBook;
@@ -89,31 +91,27 @@ class _BookFormScreenState extends ConsumerState<BookFormScreen> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: state is AsyncLoading
-                    ? null
-                    : () async {
-                        final user = FirebaseAuth.instance.currentUser;
-                        if (user == null) return;
-                        final book = Book(
-                          id: widget.existingBook?.id ?? '',
-                          title: title,
-                          author: author,
-                          condition: condition,
-                          imageUrl: widget.existingBook?.imageUrl ?? '',
-                          ownerId: user.uid,
-                          status: 'Available',
-                          createdAt: DateTime.now() as dynamic,
-                          updatedAt: DateTime.now() as dynamic,
-                        );
-                        if (isEditing) {
-                          await controller.updateBook(book, imageFile);
-                        } else {
-                          await controller.addBook(book, imageFile);
-                        }
-                        if (context.mounted) Navigator.pop(context);
-                      },
-                child: Text(isEditing ? 'Update Book' : 'Add Book'),
+                onPressed: () async {
+                  final repo = ref.read(bookRepoProvider);
+                  final user = FirebaseAuth.instance.currentUser;
+                  if (user == null) return;
+                  final book = Book(
+                    title: title.trim(),
+                    author: author.trim(),
+                    condition: condition,
+                    ownerId: user.uid,
+                    status: 'Available', id: '', imageUrl: '', createdAt: Timestamp.now(), updatedAt: Timestamp.now(),
+                  );
+
+                  await repo.createBook(book, imageFile);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('✅ Book added successfully!')),
+                  );
+                  Navigator.pop(context);
+                },
+                child: const Text('Add Book'),
               ),
+
               if (state is AsyncError)
                 Padding(
                   padding: const EdgeInsets.all(8.0),

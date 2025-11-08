@@ -5,7 +5,12 @@ import '../data/book_repo_firebase.dart';
 import '../domain/repos/book_repo.dart';
 import 'package:image_picker/image_picker.dart';
 
-final bookRepoProvider = Provider<BookRepo>((_) => BookRepoFirebase());
+final bookRepoProvider = Provider<BookRepo>((ref) {
+  return BookRepoFirebase();
+});
+
+
+// final bookRepoProvider = Provider<BookRepo>((_) => BookRepoFirebase());
 
 final allBooksProvider = StreamProvider<List<Book>>(
   (ref) => ref.watch(bookRepoProvider).watchAllBooks(),
