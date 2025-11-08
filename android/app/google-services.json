@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1734546993",
+    "project_id": "mybookswappapp",
+    "storage_bucket": "mybookswappapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1734546993:android:a3384f855d3e0ad12ca710",
+        "android_client_info": {
+          "package_name": "com.example.my_book_swap_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1734546993-aqragvha1ium2akn9c4hlh7e94ee0ptj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsevcOj5wXPVkQyoqhk1mk7sj4Zet226o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1734546993-aqragvha1ium2akn9c4hlh7e94ee0ptj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1734546993-o1k1taj1gdjnfidd5pno4qjteds7dssn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myBookSwapApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
