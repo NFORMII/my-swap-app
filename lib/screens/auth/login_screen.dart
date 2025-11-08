@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFB84D),
+                      color: const Color.fromARGB(255, 255, 255, 255),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Icon(
@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Subtitle
                   Text(
-                    'Swap Your Books\nWith Other Students',
+                    'Get everyone to read your book \n swap With Other Students',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
