@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_book_swap_app/domain/models/swap_repo.dart';
 import '../domain/models/swap.dart';
-import '../domain/repos/swap_repo.dart';
 
 class SwapRepoFirebase implements SwapRepo {
   final _db = FirebaseFirestore.instance;

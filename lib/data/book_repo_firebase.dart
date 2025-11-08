@@ -18,7 +18,6 @@ class BookRepoFirebase implements BookRepo {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .handleError((e) {
-          print('❌ Firestore error in watchAllBooks: $e');
         })
         .map((snap) =>
             snap.docs.map((doc) => Book.fromJson(doc.data(), doc.id)).toList());
@@ -33,7 +32,6 @@ class BookRepoFirebase implements BookRepo {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .handleError((e) {
-          print('❌ Firestore error in watchMyBooks: $e');
         })
         .map((snap) =>
             snap.docs.map((doc) => Book.fromJson(doc.data(), doc.id)).toList());
@@ -89,8 +87,8 @@ class BookRepoFirebase implements BookRepo {
     await _db.collection('books').doc(id).delete();
     try {
       await _storage.ref('book_covers/$ownerId/$id.jpg').delete();
+    // ignore: empty_catches
     } catch (e) {
-      print('⚠️ No image to delete or failed to delete: $e');
     }
   }
 }

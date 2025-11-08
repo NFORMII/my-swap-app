@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_book_swap_app/presentation/listings/book_card.dart';
 import 'package:uuid/uuid.dart';
-import '../../domain/models/book.dart';
 import '../../domain/models/swap.dart';
 import '../../state/book_providers.dart';
 import '../../state/swap_providers.dart';
@@ -15,7 +14,7 @@ class BrowseListingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final books = ref.watch(allBooksProvider);
-    final swapController = ref.watch(swapControllerProvider.notifier);
+    final _ = ref.watch(swapControllerProvider.notifier);
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(

@@ -2,9 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../domain/models/book.dart';
-import '../../../state/book_providers.dart';
-
 class SwapOffersScreen extends ConsumerWidget {
   const SwapOffersScreen({super.key});
 
@@ -117,10 +114,12 @@ class _SwapList extends ConsumerWidget {
                                       .collection('swaps')
                                       .doc(swaps[index].id)
                                       .update({'status': 'Accepted'});
+                                  // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Swap accepted')),
                                   );
                                 } catch (e) {
+                                  // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text('Failed to accept swap: $e')),
                                   );
@@ -136,10 +135,12 @@ class _SwapList extends ConsumerWidget {
                                       .collection('swaps')
                                       .doc(swaps[index].id)
                                       .update({'status': 'Rejected'});
+                                  // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Swap rejected')),
                                   );
                                 } catch (e) {
+                                  // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text('Failed to reject swap: $e')),
                                   );

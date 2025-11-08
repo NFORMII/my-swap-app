@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../state/chat_providers.dart';
-import '../../domain/models/message.dart';
 
 class ChatDetailScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -43,6 +42,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                           const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
                         color: isMe
+                            // ignore: deprecated_member_use
                             ? Colors.blueAccent.withOpacity(0.8)
                             : Colors.grey.shade300,
                         borderRadius: BorderRadius.circular(12),

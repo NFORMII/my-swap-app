@@ -17,7 +17,7 @@ import 'package:my_book_swap_app/presentation/chats/chat_detail_screen.dart';
 import 'package:my_book_swap_app/state/auth_providers.dart';
 
 // Book and listing screens
-import 'package:my_book_swap_app/presentation/browse/browse_listings_screen.dart';
+// import 'package:my_book_swap_app/presentation/browse/browse_listings_screen.dart';
 import 'package:my_book_swap_app/presentation/listings/my_listings_screen.dart';
 
 /// Signal if Firebase initialized successfully (set in main.dart)

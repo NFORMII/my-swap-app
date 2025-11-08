@@ -9,7 +9,7 @@ ThemeData buildLightTheme() {
   return ThemeData(
     colorScheme: scheme,
     useMaterial3: true,
-    scaffoldBackgroundColor: scheme.background,
+    scaffoldBackgroundColor: scheme.surface,
     appBarTheme: AppBarTheme(
       elevation: 0,
       centerTitle: false,
@@ -35,8 +35,9 @@ ThemeData buildLightTheme() {
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
+      // ignore: deprecated_member_use
       indicatorColor: scheme.secondary.withOpacity(.22),
-      labelTextStyle: MaterialStateProperty.all(
+      labelTextStyle: WidgetStateProperty.all(
         const TextStyle(fontWeight: FontWeight.w600),
       ),
     ),
@@ -63,8 +64,9 @@ ThemeData buildDarkTheme() {
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
+      // ignore: deprecated_member_use
       indicatorColor: scheme.secondary.withOpacity(.28),
-      labelTextStyle: MaterialStateProperty.all(
+      labelTextStyle: WidgetStateProperty.all(
         const TextStyle(fontWeight: FontWeight.w600),
       ),
     ),

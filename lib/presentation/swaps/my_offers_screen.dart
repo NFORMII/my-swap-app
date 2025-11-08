@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../state/swap_providers.dart';
-import '../../domain/models/swap.dart';
+
 
 class MyOffersScreen extends ConsumerWidget {
   const MyOffersScreen({super.key});

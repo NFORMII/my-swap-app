@@ -80,7 +80,7 @@ class _BookFormScreenState extends ConsumerState<BookFormScreen> {
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
-                value: condition,
+                initialValue: condition,
                 decoration: const InputDecoration(labelText: 'Condition'),
                 items: ['New', 'Like New', 'Good', 'Used']
                     .map((e) => DropdownMenuItem(value: e, child: Text(e)))
