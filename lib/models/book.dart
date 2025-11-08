@@ -100,7 +100,7 @@ class Book {
       offeredTo: data['offeredTo'] as String?,
     );
   }
-
+//Converts Firestore document data into a Book object inside Flutter  this helps display book details on the screen easil
   Map<String, dynamic> toMap() {
     return {
       'title': title,
